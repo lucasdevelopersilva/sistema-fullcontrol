@@ -15,7 +15,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        echo 'php';
-//        return view("frontend.index");
+        
+        return view("backend.index");
     }
 }
