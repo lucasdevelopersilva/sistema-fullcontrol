@@ -23,8 +23,6 @@ class Programation extends Model
         return $this->belongsTo(User::class);
     }
     
-    public function participant(){
-        return $this->hasMany(Participant::class);
-    }
-    
+   
+     
 }

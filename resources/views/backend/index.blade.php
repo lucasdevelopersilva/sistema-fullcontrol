@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>AdminLTE 3 | Log in</title>
+        <title>{{ env("APP_TITLE") }}</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -20,18 +20,23 @@
     </head>
     <body class="hold-transition login-page">
         <div class="login-box">
+              @if(session()->has('message'))
+                <div class="alert alert-warning">
+                    {{ session()->get('message') }}
+                </div>
+                @endif
             <div class="login-logo">
-                <a href="{{route('login')}}"><b>Admin</b>LTE</a>
+                <a href="{{route('login')}}"><b>Sistema de </b>APP</a>
             </div>
             <!-- /.login-logo -->
             <div class="card">
                 <div class="card-body login-card-body">
                     <p class="login-box-msg">Faça seu Login</p>
 
-                    <form action="{{route('login')}}" method="post">
+                    <form action="{{route('user.formlogin')}}" method="post">
                         @csrf
                         <div class="input-group mb-3">
-                            <input type="email" class="form-control" placeholder="E-mail">
+                            <input type="email" name="email" class="form-control" placeholder="E-mail">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>
@@ -39,7 +44,7 @@
                             </div>
                         </div>
                         <div class="input-group mb-3">
-                            <input type="password" class="form-control" placeholder="Senha">
+                            <input type="password" name="password" class="form-control" placeholder="Senha">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>

@@ -20,4 +20,8 @@ class Promotion extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+    
+     public function participant(){
+        return $this->hasMany(Participant::class);
+    }
 }

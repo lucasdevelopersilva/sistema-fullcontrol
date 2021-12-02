@@ -13,7 +13,8 @@ class Team extends Model
         'user_id',
         "name",
         "description",
-        "cover"
+        "cover",
+        "status"
     ];
     
     public function user(){
