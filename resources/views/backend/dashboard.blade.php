@@ -4,7 +4,7 @@
 
     <!-- Default box -->
     <div class="card">
-      
+
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
@@ -13,11 +13,13 @@
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile">
                             <div class="text-center">
+                                @if($config)
                                 <img class="profile-user-img img-fluid img-circle"
-                                     src="../../dist/img/user4-128x128.jpg"
-                                     alt="User profile picture">
+                                     src="{{$config->logotipo}}"
+                                     alt="{{ $user->name }}">
+                                @endif
                             </div>
-  
+
                             <h3 class="profile-username text-center">{{ $user->name }}</h3>
 
                             <p class="text-muted text-center">{{$user->email}}</p>
@@ -40,43 +42,82 @@
                     </div>
                     <!-- /.card -->
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-8 ">
                     <!-- About Me Box -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">About Me</h3>
+                            <h3 class="card-title">Informações</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <strong><i class="fas fa-book mr-1"></i> Education</strong>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-12">
+                                    <div class="info-box">
+                                        <span class="info-box-icon bg-info"><i class="fa fa-rss"></i></span>
 
-                            <p class="text-muted">
-                                B.S. in Computer Science from the University of Tennessee at Knoxville
-                            </p>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Notícias</span>
+                                            <span class="info-box-number">{{$count_noticia}}</span>
+                                        </div>
+                                        <!-- /.info-box-content -->
+                                    </div>
+                                    <!-- /.info-box -->
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-md-6 col-sm-6 col-12">
+                                    <div class="info-box">
+                                        <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
 
-                            <hr>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Promoções</span>
+                                            <span class="info-box-number">{{$count_promocao}}</span>
+                                        </div>
+                                        <!-- /.info-box-content -->
+                                    </div>
+                                    <!-- /.info-box -->
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-md-6 col-sm-6 col-12">
+                                    <div class="info-box">
+                                        <span class="info-box-icon bg-warning"><i class="fa fa-paste"></i></span>
 
-                            <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Programas</span>
+                                            <span class="info-box-number">{{$count_programa}}</span>
+                                        </div>
+                                        <!-- /.info-box-content -->
+                                    </div>
+                                    <!-- /.info-box -->
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-md-6 col-sm-6 col-12">
+                                    <div class="info-box">
+                                        <span class="info-box-icon bg-danger"><i class="far fa-comment"></i></span>
 
-                            <p class="text-muted">Malibu, California</p>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Recados</span>
+                                            <span class="info-box-number">{{$count_mural}}</span>
+                                        </div>
+                                        <!-- /.info-box-content -->
+                                    </div>
+                                    <!-- /.info-box -->
+                                </div>
+                                <!-- /.col -->
+                                <!-- /.col -->
+                                <div class="col-md-6 col-sm-6 col-12">
+                                    <div class="info-box">
+                                        <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
 
-                            <hr>
-
-                            <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
-
-                            <p class="text-muted">
-                                <span class="tag tag-danger">UI Design</span>
-                                <span class="tag tag-success">Coding</span>
-                                <span class="tag tag-info">Javascript</span>
-                                <span class="tag tag-warning">PHP</span>
-                                <span class="tag tag-primary">Node.js</span>
-                            </p>
-
-                            <hr>
-
-                            <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
-
-                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text">Equipe</span>
+                                            <span class="info-box-number">{{$count_team}}</span>
+                                        </div>
+                                        <!-- /.info-box-content -->
+                                    </div>
+                                    <!-- /.info-box -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -85,8 +126,8 @@
             </div>
         </div>
     </div>
-       
-<!-- /.card -->
+
+    <!-- /.card -->
 
 </section>
 @endsection

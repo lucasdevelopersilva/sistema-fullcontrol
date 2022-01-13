@@ -21,6 +21,7 @@ class ConfigController extends Controller
         $team = \App\Models\Config::where('user_id',Auth::user()->id)->first();
        if(!$team){
            $this->create();
+           $team = \App\Models\Config::where('user_id',Auth::user()->id)->first();
        }
         return view("backend.config", ["title" => "Configuração", "edit" => $team]);
     }
@@ -29,6 +30,7 @@ class ConfigController extends Controller
         $team = \App\Models\Menu::where('user_id',Auth::user()->id)->first();
        if(!$team){
            $this->createmenu();
+             $team = \App\Models\Menu::where('user_id',Auth::user()->id)->first();
        }
         return view("backend.configmenu", ["title" => "Configuração do menu", "edit" => $team]);
     }
@@ -125,6 +127,9 @@ class ConfigController extends Controller
         $post->stream = $request->stream;
         $post->webtv = $request->webtv;
         $post->whatsapp = $request->whatsapp;         
+        $post->email = $request->email;         
+        $post->color1 = $request->color1;         
+        $post->color2 = $request->color2;         
         $post->save();
         Log::info("Configuração ".Auth::user()->id." atualizada");
         return redirect()->back()->with("message", "Atualizado");
@@ -177,6 +182,25 @@ class ConfigController extends Controller
         $post->background = $background;         
         $post->save();
         Log::info("background ".Auth::user()->id." atualizada");
+        return redirect()->back()->with("message", "Atualizado");
+    }
+    public function icone(Request $request) {
+
+
+        $post = \App\Models\Config::where("user_id",Auth::user()->id)->first();  
+        
+        $icone = $post->icone;
+        if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
+            $Image = $request->cover;
+            $ext = $Image->extension();
+//            ddd($Image);
+            $ImageName = md5($Image->getClientOriginalName() . "-" . strtotime('now')) . "." . $ext;
+            $request->cover->move(public_path("img/icone"), $ImageName);
+            $icone = '/img/icone/' . $ImageName;
+        }
+        $post->icone = $icone;         
+        $post->save();
+        Log::info("icone ".Auth::user()->id." atualizada");
         return redirect()->back()->with("message", "Atualizado");
     }
     /**

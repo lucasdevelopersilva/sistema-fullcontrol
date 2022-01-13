@@ -18,7 +18,7 @@ class EquipeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $team = \App\Models\Teams::where('user_id',Auth::user()->id)->paginate(16);
+        $team = \App\Models\Teams::where('user_id',Auth::user()->id)->paginate(500);
         
         return view("backend.equipe.index", ["title" => "Equipe", "list" => $team]);
     }

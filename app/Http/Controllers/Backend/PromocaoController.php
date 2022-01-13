@@ -19,7 +19,8 @@ class PromocaoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $team = \App\Models\Promotion::where('user_id',Auth::user()->id)->paginate(16);
+        $team = \App\Models\Promotion::where('user_id',Auth::user()->id)->paginate(500);
+       
        
         return view("backend.promocao.index", ["title" => "Promoção", "list" => $team]);
     }
@@ -72,7 +73,8 @@ class PromocaoController extends Controller
          if(!$post){
              return redirect()->back()->with("message","Promoção não encontrada");
          }
-        return view("backend.promocao.edit", ["title" => "Editar promoção", 'edit' => $post]);
+          $participante = \App\Models\Participant::where('promotion_id',$id)->paginate(16);
+        return view("backend.promocao.edit", ["title" => "Editar promoção", 'edit' => $post,"participantes"=>$participante]);
     }
 
     /**

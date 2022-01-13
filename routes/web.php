@@ -60,11 +60,13 @@ Route::namespace("Backend")->group(function(){
     Route::post("/promocao/{id}",[PromocaoController::class,"destroy"])->name("promocao.delete");
     //  Usuários
     Route::get("/users",[UserController::class,"index"])->name("users.index");
+    Route::post("/users",[UserController::class,"index"])->name("users.index");
     Route::get("/addusers",[UserController::class,"create"])->name("users.create");
     Route::get("/loginid/{id}",[UserController::class,"loginId"])->name("users.loginid");
+    Route::get("/adminloginid/{id}",[UserController::class,"loginIdAdmin"])->name("login.admin");
     Route::get("/addusers/{id}",[UserController::class,"edit"])->name("users.save");
     Route::post("/addusers/{id}",[UserController::class,"update"])->name("users.update");
-    Route::post("/users/{id}",[UserController::class,"destroy"])->name("users.delete");
+    Route::get("/users/{id}",[UserController::class,"destroy"])->name("users.delete");
     
     Route::get("/radio",[UserController::class,"editprofile"])->name("radio.save");
     Route::post("/radio/up",[UserController::class,"radioupdate"])->name("radio.update");
@@ -83,11 +85,13 @@ Route::namespace("Backend")->group(function(){
     
     Route::get("/config-logotipo",[ConfigController::class,"editimage"])->name('config.logotipo');
     Route::post("/config-logo",[ConfigController::class,"logotipo"])->name('config.logotiposave');
+    Route::post("/config-icone",[ConfigController::class,"icone"])->name('config.iconesave');
     Route::post("/config-bg",[ConfigController::class,"background"])->name('config.backgroundsave');
     
     
     Route::get("/appgerar",[gerarApp::class,"index"])->name("app.editar");
-    Route::post("/appgerarapk",[gerarApp::class,"gerar"])->name("app.gerarApk");
+    Route::post("/appgerarapk",[gerarApp::class,"app_exec"])->name("app.gerarApk");
+    Route::get("/app-down",[gerarApp::class,"app_down"])->name("app.download");
     
 });
 

@@ -21,14 +21,14 @@
                 </p>
             </a>        
         </li> 
-        <li class="nav-item ">
+<!--        <li class="nav-item ">
             <a href="{{route("dashboard")}}" class="nav-link">
                 <i class="nav-icon fas fa-comment"></i>
                 <p>
                     Pedidos 
                 </p>
             </a>        
-        </li> 
+        </li> -->
         <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-rss"></i>
@@ -161,4 +161,15 @@
         
 
     </ul>
+     
+    @if(session()->get('admin_id'))
+    <div class='voltar-admin'>
+        <a href="{{route("login.admin",['id'=>session()->get('admin_id')])}}" class="nav-link">
+                <i class="nav-icon far fa-user"></i>
+                <span>
+                    Painel ADMIN                   
+                </span>
+            </a>
+    </div>
+    @endif
 </nav>

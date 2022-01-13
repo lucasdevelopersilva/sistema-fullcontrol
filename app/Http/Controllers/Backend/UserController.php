@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller {
 
@@ -19,9 +20,19 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        $posts = \App\Models\User::where("level", 1)->paginate(16);
-        return view("backend.users.index", ["title" => "Rádios", "list" => $posts]);
+    public function index(Request $request) {
+        $key_search = null;
+        if(Auth()->user()->level==1){
+             return redirect("dashboard")->with("message", "Local não permitido");
+        }
+        $Lists = \App\Models\User::where("level", 1)->orderBy("name", "asc");
+        if ($request->has("buscar")) {
+            $key_search = $request->buscar;
+            $Lists = $Lists->where("name", "like", "%{$request->buscar}%");
+        }
+
+        $posts = $Lists->paginate(16);
+        return view("backend.users.index", ["title" => "Rádios", "list" => $posts, "search" => $key_search]);
     }
 
     /**
@@ -54,14 +65,34 @@ class UserController extends Controller {
     /**
      * Display the specified resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function loginId($id) {
+    public function loginId(Request $request,$id) {
+
+        session()->put('admin_id', Auth::user()->id);
+ 
         Auth::logout();
         Auth::loginUsingId($id, true);
-          return redirect("dashboard");
-       
+
+        return redirect("dashboard");
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function loginIdAdmin(Request $request,$id) {
+
+        if (session()->has('admin_id')) {
+            Auth::logout();
+            Auth::loginUsingId(session()->get('admin_id'), true);
+             session()->forget('admin_id');
+        }
+        return redirect("dashboard");
     }
 
     /**
@@ -167,6 +198,22 @@ class UserController extends Controller {
         $title = '';
         $post = \App\Models\User::findOrFail($id);
         if ($post):
+           $config =  \App\Models\Config::where("user_id",$id);
+           $menu = \App\Models\Menu::where("user_id",$id);
+           $Message = \App\Models\Message::where("user_id",$id);
+           $Programation = \App\Models\Programation::where("user_id",$id);
+           $Posts = \App\Models\Posts::where("user_id",$id);
+           $Promotion = \App\Models\Promotion::where("user_id",$id);
+           $Teams = \App\Models\Teams::where("user_id",$id); 
+           
+           $config->delete();
+           $menu->delete();
+           $Message->delete();
+           $Programation->delete();
+           $Posts->delete(); 
+           $Promotion->delete();
+           $Teams->delete();
+        
             \App\Models\User::destroy($id);
             $title = $post->title;
             Log::info("Rádio {$post->title} removida");

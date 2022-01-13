@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" href="{{asset('favicon.png')}}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
+  <link rel="stylesheet" href="{{asset('plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css')}}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- overlayScrollbars -->
@@ -119,6 +120,7 @@
 <!-- Bootstrap 4 -->
 <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
+<script src="{{asset('plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js')}}"></script>
 <script src="{{asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js')}}"></script>
 <!-- AdminLTE App --> 
 <script src="{{asset('dist/js/adminlte.min.js')}}"></script>

@@ -31,7 +31,7 @@ class AuthController extends Controller {
         ];
          
         if(Auth::attempt($credencials)){
-            return redirect('dashboard');
+            return redirect('/dashboard');
         }
        return redirect()->back()->withInput()->with("message", "Os dados informados não estão corretos");
     }

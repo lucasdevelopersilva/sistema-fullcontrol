@@ -52,10 +52,12 @@ public class FragmentRadioAdminPanel extends Fragment implements OnClickListener
         lyt_volume_bar = (LinearLayout) relativeLayout.findViewById(R.id.lyt_volume_bar);
         iv_bg = (ImageView) relativeLayout.findViewById(R.id.iv_bg);
         toolbar = (Toolbar) relativeLayout.findViewById(R.id.toolbar);
+
         nowPlayingTitle = relativeLayout.findViewById(R.id.now_playing_title);
         nowPlaying = relativeLayout.findViewById(R.id.now_playing);
         nowPlaying.setSelected(true);
         nowPlaying.setSingleLine();
+
         equalizerView = relativeLayout.findViewById(R.id.equalizer_view);
         menu_play = (LinearLayout) relativeLayout.findViewById(R.id.menu_play);
         ll_agenda = (LinearLayout) relativeLayout.findViewById(R.id.ll_agenda);
@@ -77,10 +79,22 @@ public class FragmentRadioAdminPanel extends Fragment implements OnClickListener
 
         carregarMenu();
 
-        carregarProgramacao();
+        //if(Config.STATUS_RADIO){
+            carregarProgramacao();
+        //}
 
 
-        if (Config.ENABLE_AUTO_PLAY) {
+        if (!Config.STATUS_RADIO) {
+            nowPlayingTitle.setVisibility(View.GONE);
+            nowPlaying.setVisibility(View.GONE);
+            equalizerView.setVisibility(View.GONE);
+            menu_play.setVisibility(View.GONE);
+            contente_padrao.setVisibility(View.GONE);
+            ll_agenda.setVisibility(View.GONE);
+        }
+
+
+        if (Config.ENABLE_AUTO_PLAY && Config.STATUS_RADIO) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -89,7 +103,7 @@ public class FragmentRadioAdminPanel extends Fragment implements OnClickListener
             }, 1000);
         }
 
-        if (Config.ENABLE_VOLUME_BAR) {
+        if (Config.ENABLE_VOLUME_BAR && Config.STATUS_RADIO) {
             lyt_volume_bar.setVisibility(View.VISIBLE);
             initVolumeBar();
         } else {
@@ -294,7 +308,7 @@ public class FragmentRadioAdminPanel extends Fragment implements OnClickListener
 
 
     private void carregarMenu() {
-        StringRequest postRequest = new StringRequest(Request.Method.POST, Config.ADMIN_PANEL_URL+"/get_MenuApp",
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Config.ADMIN_PANEL_URL+"/get_MenuApp",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -397,7 +411,7 @@ public class FragmentRadioAdminPanel extends Fragment implements OnClickListener
     private void carregarProgramacao() {
 
         agendaArrayList.clear();
-        StringRequest postRequest = new StringRequest(Request.Method.POST, Config.ADMIN_PANEL_URL+"/get_programacao_atual",
+        StringRequest postRequest = new StringRequest(Request.Method.GET, Config.ADMIN_PANEL_URL+"/get_programacao_atual",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -411,7 +425,7 @@ public class FragmentRadioAdminPanel extends Fragment implements OnClickListener
                                     agenda.setDia(jsonObj.optString("dia"));
                                     agenda.setFim(jsonObj.optString("fim"));
                                     agenda.setInicio(jsonObj.optString("inicio"));
-                                    agenda.setImg_agenda(Config.URL_IMAGE_AGENDA + jsonObj.optString("img_agenda"));
+                                    agenda.setImg_agenda(jsonObj.optString("img_agenda"));
                                     agenda.setPrograma(jsonObj.optString("programa"));
                                     agenda.setDescricao(jsonObj.optString("descricao"));
 
@@ -463,8 +477,8 @@ public class FragmentRadioAdminPanel extends Fragment implements OnClickListener
 
 
         if (agendaArrayList.size() == 0) {
-            contente_padrao.setVisibility(View.VISIBLE);
-            ll_agenda.setVisibility(View.GONE);
+           // contente_padrao.setVisibility(View.VISIBLE);
+           // ll_agenda.setVisibility(View.GONE);
         }
         boolean programacaoAtiva = false;
 
@@ -539,12 +553,18 @@ public class FragmentRadioAdminPanel extends Fragment implements OnClickListener
                 contente_padrao.setVisibility(View.GONE);
                 break;
             }
+
+        }
+
+        if(!Config.STATUS_RADIO){
+            contente_padrao.setVisibility(View.GONE);
+            ll_agenda.setVisibility(View.GONE);
+        }else if(!Config.STATUS_RADIO){
             contente_padrao.setVisibility(View.VISIBLE);
             ll_agenda.setVisibility(View.GONE);
         }
 
-
-        if (!programacaoAtiva) {
+        if (!programacaoAtiva && Config.STATUS_RADIO) {
             contente_padrao.setVisibility(View.VISIBLE);
             ll_agenda.setVisibility(View.GONE);
         }
@@ -754,7 +774,7 @@ public class FragmentRadioAdminPanel extends Fragment implements OnClickListener
                     nowPlayingTitle.setText(R.string.now_playing);
                     nowPlaying.setText(radio_name);
 
-                    if (Config.ENABLE_AUTO_PLAY) {
+                    if (Config.ENABLE_AUTO_PLAY && Config.STATUS_RADIO) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -784,7 +804,7 @@ public class FragmentRadioAdminPanel extends Fragment implements OnClickListener
         //btn_mural = (LinearLayout) relativeLayout.findViewById(R.id.btn_mural);
         btn_noticias = (LinearLayout) relativeLayout.findViewById(R.id.btn_noticias);
         btn_youtube = (LinearLayout) relativeLayout.findViewById(R.id.btn_youtube);
-       // btn_progamacao = (LinearLayout) relativeLayout.findViewById(R.id.btn_progamacao);
+        menu_play = (LinearLayout) relativeLayout.findViewById(R.id.menu_play);
         progressBar = relativeLayout.findViewById(R.id.progressBar);
         progressBar.setMax(100);
         progressBar.setVisibility(View.VISIBLE);
@@ -800,10 +820,21 @@ public class FragmentRadioAdminPanel extends Fragment implements OnClickListener
         buttonPlayPause = relativeLayout.findViewById(R.id.btn_play_pause);
         buttonPlayPause.setOnClickListener(this);
 
-        updateButtons();
+//        if(!Config.STATUS_RADIO){
+//            menu_play.setVisibility(View.GONE);
+//            progressBar.setVisibility(View.GONE);
+//        }else{
+            updateButtons();
+            progressBar.setMax(100);
+            progressBar.setVisibility(View.VISIBLE);
+//        }
+
     }
 
     public void updateButtons() {
+        if(!Config.STATUS_RADIO){
+            return;
+        }
         if (isPlaying() || progressBar.getVisibility() == View.VISIBLE) {
             //If another stream is playing, show this in the layout
             if (RadioManager.getService() != null && radio_url != null && !radio_url.equals(RadioManager.getService().getStreamUrl())) {
@@ -872,7 +903,9 @@ public class FragmentRadioAdminPanel extends Fragment implements OnClickListener
 
     //@param info - the text to be updated. Giving a null string will hide the info.
     public void updateMediaInfoFromBackground(String info, Bitmap image) {
-
+//        if(!Config.STATUS_RADIO){
+//            return;
+//        }
         if (info != null)
             nowPlaying.setText(info);
 

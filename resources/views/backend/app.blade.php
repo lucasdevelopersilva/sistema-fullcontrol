@@ -25,12 +25,27 @@
                     </div>
                     @endif 
                 </div>
+                <div class="col-sm-12">
+                    @if($list->fileapp) 
+                    Seu aplicativo já foi criado na versão <b>{{$list->version}}</b>, Faça o download do seu aplicativo.
+                    <a class="btn btn-primary btn-sm" target="_blank" href='{{route('app.download')}}'>BAIXAR APP</a>
+               
+                    @endif 
+                </div>
                 <div class="col-sm-12"><!-- comment -->
                     <form action="{{route("app.gerarApk")}}" method="POST"  enctype="multipart/form-data"> 
-                       
+                       @csrf
                         <div class="form-group">
+                            <label>Tipo de arquivo gerado </label>
+                            <select name="type" class="form-control"  >  
+                                <option value="apk">Apk </option>                              
+                                <option value="aab">Aab </option>                              
+                            </select> 
+                        </div>
+                        <div class="form-group">
+                           
                             <label>Versão </label>
-                            <select name="version" class="form-control" type="file" > 
+                            <select name="version" class="form-control"   > 
                                 @for($x=1; $x<=10; $x++) 
                                 @for($y=0; $y<=9; $y++) 
                                 <option value="{{ $x }}.{{$y}}">{{ $x }}.{{$y}}</option>
@@ -41,7 +56,7 @@
 
 
                         <div class="form-group">
-                            <button class="btn btn-primary btn-block"  >Gerar</button>   
+                            <button class="btn btn-primary btn-block" >Gerar</button>    
                         </div>
                     </form>
                 </div>                

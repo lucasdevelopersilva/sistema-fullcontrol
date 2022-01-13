@@ -45,6 +45,25 @@
                     </form>
                 </div>
                 <div class="col-sm-6">
+                    <form action="{{route("config.iconesave")}}" method="POST"  enctype="multipart/form-data"> 
+                        @if($edit->icone)
+                        <div class="views-logo d-flex justify-content-center">
+                            <img src="{{ $edit->icone }}" class="img-fluid " rel="file"  />
+                        </div>
+                        @endif
+                         @csrf
+                        <hr>
+                        <div class="input-image ">
+                            <label><i class="fa fa-image"></i> Icone</label>
+                            <input name="cover" type="file" accept="image/*"   placeholder="imagem"/> 
+                        </div> 
+                        <hr> 
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block"  >Salvar</button>   
+                        </div> 
+                    </form>
+                </div>
+                <div class="col-sm-6">
                     <form action="{{route("config.backgroundsave")}}" method="POST"  enctype="multipart/form-data"> 
                         @if($edit->background)
                         <div class="views-logo d-flex justify-content-center">

@@ -9,5 +9,9 @@ $(function () {
         $(this).bootstrapSwitch('state', $(this).prop('checked'));
     });
 
+ 
+    $('#cp1').colorpicker();
+    $('#cp2').colorpicker();
+ 
 })
 

@@ -20,12 +20,27 @@ class ApiController extends Controller {
     public function get_MenuApp() {
         $data = \App\Models\Config::where("user_id", $this->id)->first();
         $datamenu = \App\Models\Menu::where("user_id", $this->id)->first();
+         
+            if(filter_var($data->whatsapp, FILTER_VALIDATE_URL)):
+                $whatsapp = $data->whatsapp;
+           
+            else: 
+                 
+                 if(strripos($data->whatsapp, "55")===0):
+                      $whats = $data->whatsapp;
+              
+                 else:
+                     $whats = "55".$data->whatsapp; 
+                 endif;
+                 $whatsapp = "https://wa.me/{$whats}&text=Quero pedir uma música";
+            endif;
+           
         $data['status'] = 1;
         return [["id" => $data->id,
         "tv_link" => $data['webtv'],
         "tv_status" => ($datamenu['webtv'] == 1 ? "true" : 'false'),
         "status_radio" => ($datamenu['radio'] == 1 ? "true" : 'false'),
-        "whatsapp_link" => $data->whatsapp,
+        "whatsapp_link" => $whatsapp,
         "whatsapp_status" => ($datamenu['whatsapp'] == 1 ? "true" : 'false'),
         "site_link" => $data->site,
         "site_status" => ($datamenu['site'] == 1 ? "true" : 'false'),
@@ -185,30 +200,8 @@ class ApiController extends Controller {
         return $retorno;
     }
 
-    public function set_promocao() {
-        $data = \App\Models\Promotion::where("user_id", $this->id)->paginate(500);
-        $retorno = [];
-        if (count($data)):
-            foreach ($data as $item):
-
-                $cover = url($item->cover);
-                $retorno[] = ['id' => $item->id,
-                    'titulo' => $item->title,
-                    'descricao' => $item->description,
-                    'imagem' => $cover,
-                    'data' => $item->data,
-                    'user_id' => $item->id,
-                    'status' => $item->status,
-                ];
-
-
-            endforeach;
-        endif;
-        return $retorno;
-    }
-
     public function get_mural() {
-        $data = \App\Models\Promotion::where("user_id", $this->id)->paginate(500);
+        $data = \App\Models\Message::where("user_id", $this->id)->where("type","recado")->paginate(500);
         $retorno = [];
         if (count($data)):
             foreach ($data as $item):
@@ -228,31 +221,19 @@ class ApiController extends Controller {
     }
 
     public function set_mural(Request $request) {
-        if(!$request->mensagem || !$request->nome){
-              $result =  ['resposta' => 'Preencha todos os campos']; 
-        }else{
-            
-       
-        $post = new \App\Models\Message();
-        $post->user_id = $this->id;
-        $post->type = "recado";
-        $post->description = $request->mensagem;
-        $post->title = $request->nome;
-
-        $post->save();
-         $result =  ['resposta' => 'Adicionado com sucesso'];
-         }
-       
-         return response()->json($result);
+        
     }
 
     public function get_config() {
+        
         $data = \App\Models\Config::where("user_id", $this->id)->first();
+         $datamenu = \App\Models\Menu::where("user_id", $this->id)->first();
         $radio_logo = url($data->logotipo);
         $radio_bg = url($data->background);
 
         $retorno['result'][] = [
             'id' => $data->id,
+            "status_radio" => ($datamenu['radio'] == 1 ? "true" : 'false'),
             'capa_background' => true,
             'radio_name' => $data->title,
             'radio_image' => $radio_logo,

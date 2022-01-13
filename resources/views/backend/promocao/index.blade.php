@@ -45,7 +45,7 @@
                 @endforeach
                   @else
                 <div class=' col-12'>
-                    <div class=' '>
+                      <div class='alert alert-info'>
                         Não existe promoção cadastrada
                     </div>
                 </div>

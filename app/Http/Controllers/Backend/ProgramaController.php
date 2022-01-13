@@ -20,7 +20,7 @@ class ProgramaController extends Controller
      */
     public function index() {
         $team = \App\Models\Programation::where('user_id', Auth::user()->id)->paginate(16);
-       
+      
         return view("backend.programacao.index", ["title" => "Programação", "list" => $team]);
     }
 

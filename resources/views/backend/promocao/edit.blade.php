@@ -61,10 +61,34 @@
                         <div class="form-group"><!-- comment -->
                             <label>Status</label>
                             <input type="checkbox" name="status"  data-bootstrap-switch data-off-color="danger" data-on-color="success" {{ $edit->status==1 ? 'checked' : ''}}>
-                        </div>
-
-
-
+                        </div>  
+                    </div>
+                    <div class="col-sm-12">
+                        <h2>Participantes</h2>
+                        <table class="table table-bordered table-dark">
+                            <thead>
+                                <tr>
+                            <th>ID</th>
+                            <th>NOME</th>
+                            <th>E-MAIL</th>
+                            <th>CPF</th>
+                            <th>NASCIMENTO</th>
+                            <th>TELEFONE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($participantes as $item) 
+                                <tr>
+                            <th>{{$item->id}}</th>
+                            <th>{{$item->name}}</th>
+                            <th>{{$item->email}}</th>
+                            <th>{{$item->cpf}}</th>
+                            <th>{{$item->nascimento}}</th>
+                            <th>{{$item->phone}}</th>
+                                </tr>
+                                @endforeach 
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </form>
